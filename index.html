@@ -24,6 +24,20 @@
         <button v-on:click="crear_rutina">Crear rutina ({{ num }})</button>
         <button v-on:click="shuffle">Ordenar</button>
       </div>
+
+      <hr />
+
+      <div id="rutina-div" class="bloque">
+        <ol v-if="rutina().length > 0">
+          <li v-for="ejercicio_r in rutina()" v-bind:key="ejercicio_r.nombre">
+            <span> {{ ejercicio_r.nombre }} </span>
+          </li>
+        </ol>
+        <p v-else>La rutina no tiene ejercicios.</p>
+      </div>
+
+      <hr />
+
       <transition-group
         v-on:appear="shuffle"
         name="flip-list"
@@ -40,17 +54,6 @@
         >
         </tag-ejercicio>
       </transition-group>
-
-      <hr />
-
-      <div id="rutina-div" class="bloque">
-        <ol v-if="rutina().length > 0">
-          <li v-for="ejercicio_r in rutina()" v-bind:key="ejercicio_r.nombre">
-            <span> {{ ejercicio_r.nombre }} </span>
-          </li>
-        </ol>
-        <p v-else>La rutina no tiene ejercicios.</p>
-      </div>
 
       <hr />
 
@@ -108,10 +111,15 @@
           </div>
           <div v-else id="entrenamiento">
             <p>Serie {{ serie_actual }}</p>
+            <hr />
             <p>Ahora:</p>
-            <p class="grande">{{ t_etiqueta_entrenamiento }}</p>
+            <span class="muygrande">{{ t_etiqueta_entrenamiento }}</span>
+            <hr />
+            <p>A continuación:</p>
+            <span class="grande">{{ t_etiqueta_siguiente }}</span>
+            <hr />
             <p>Restante:</p>
-            <p class="grande">{{ t_tiempo }}</p>
+            <p class="muymuygrande">{{ t_tiempo }}</p>
           </div>
         </div>
       </div>

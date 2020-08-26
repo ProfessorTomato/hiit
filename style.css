@@ -107,7 +107,18 @@ hr {
 }
 
 .grande {
-  font-size: 32pt;
+  font-size: 36pt;
+}
+.muygrande {
+  font-size: 40pt;
+}
+.muymuygrande {
+  font-size: 72pt;
+}
+
+p {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 /* MODAL */
@@ -127,9 +138,9 @@ hr {
   font-size: 20pt;
   background-color: rgba(255, 255, 255, 0.8);
   margin: 15% auto; /* 15% from the top and centered */
-  border: 2px solid purple;
-  padding-right: 20px;
-  width: 80%; /* Could be more or less, depending on screen size */
+  border: 4px solid purple;
+  width: 90%; /* Could be more or less, depending on screen size */
+  max-width: 800px;
 }
 
 /* The Close Button */
@@ -138,6 +149,7 @@ hr {
   float: right;
   font-size: 36px;
   font-weight: bold;
+  margin-right: 20px;
 }
 
 .close:hover,

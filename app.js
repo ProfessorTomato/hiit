@@ -145,7 +145,11 @@ var app = new Vue({
             app.t_tiempo = array_entrenamiento[elem_actual].tiempo--;
             app.t_etiqueta_entrenamiento =
               array_entrenamiento[elem_actual].nombre;
-            //app.t_etiqueta_siguiente = array_entrenamiento[elem_actual + 1].nombre;
+            // Solo se actualiza el ejercicio siguiente si existe
+            if (elem_actual < array_entrenamiento.length - 1)
+              app.t_etiqueta_siguiente =
+                array_entrenamiento[elem_actual + 1].nombre;
+
             app.serie_actual = array_entrenamiento[elem_actual].serie;
             console.log(app.t_etiqueta_entrenamiento);
             if (app.t_tiempo === 1) {
