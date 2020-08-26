@@ -79,6 +79,10 @@ var app = new Vue({
       let audio2 = new Audio("./beep1.ogg");
       let audio_go = new Audio("./cannon.ogg");
       let audio_fin = new Audio("./crowd.wav");
+      audio1.load();
+      audio2.load();
+      audio_go.load();
+      audio_fin.load();
 
       // Formar el array de ejercicios
       let array_ejercicios = this.rutina();
@@ -138,7 +142,6 @@ var app = new Vue({
           if (elem_actual === array_entrenamiento.length) {
             app.t_tiempo = "";
             app.t_etiqueta_entrenamiento = "Fin del entrenamiento";
-            //app.t_etiqueta_siguiente = "Fin del entrenamiento";
             audio_fin.play();
             clearInterval(app.intervalo);
           } else {
@@ -146,9 +149,12 @@ var app = new Vue({
             app.t_etiqueta_entrenamiento =
               array_entrenamiento[elem_actual].nombre;
             // Solo se actualiza el ejercicio siguiente si existe
-            if (elem_actual < array_entrenamiento.length - 1)
+            if (elem_actual < array_entrenamiento.length - 1) {
               app.t_etiqueta_siguiente =
                 array_entrenamiento[elem_actual + 1].nombre;
+            } else {
+              app.t_etiqueta_siguiente = "Fin del entrenamiento";
+            }
 
             app.serie_actual = array_entrenamiento[elem_actual].serie;
             console.log(app.t_etiqueta_entrenamiento);
