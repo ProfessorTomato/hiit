@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
+
+html,
+body {
+  font-size: 16pt;
+  color: purple;
+  font-family: "Permanent Marker", cursive;
+  background-image: linear-gradient(
+    to bottom,
+    rgb(255, 225, 250),
+    rgb(255, 255, 255)
+  );
+  background-attachment: fixed;
+}
+
+.flip-list-move {
+  transition: transform 1s;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+#cabecera {
+  text-align: center;
+  font-size: 24pt;
+}
+
+.pie {
+  font-size: 12pt;
+}
+
+#app {
+  max-width: 1000px;
+  margin: 0 auto;
+  clear: both;
+}
+
+.ej {
+  float: left;
+  margin: 8px;
+  padding: 5px;
+  display: block;
+  border: 1px solid purple;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ejercicios {
+  float: left;
+  padding: 30px;
+  clear: both;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.bloque {
+  clear: both;
+  text-align: center;
+  border-radius: 10px;
+}
+
+button {
+  border: 1px solid pink;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: purple;
+  font-size: 16pt;
+  font-family: "Permanent Marker", cursive;
+  color: white;
+  margin: 5px;
+}
+
+input {
+  font-family: "Permanent Marker", cursive;
+  color: purple;
+  font-size: 16pt;
+  padding: 5px;
+  display: block;
+  margin: 0 auto;
+  clear: right;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid purple;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+#rutina-div {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 400px;
+}
+
+.seleccionado {
+  background-color: rgb(181, 247, 187);
+}
+
+hr {
+  border-top: 2px solid purple;
+}
+
+.grande {
+  font-size: 32pt;
+}
+
+/* MODAL */
+#modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(211, 172, 255); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+}
+
+#contenido-modal {
+  font-size: 20pt;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin: 15% auto; /* 15% from the top and centered */
+  border: 2px solid purple;
+  padding-right: 20px;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: purple;
+  float: right;
+  font-size: 36px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

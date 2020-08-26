@@ -4,11 +4,127 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HIIT Timer</title>
+    <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="favicon.png" type="image/png" />
   </head>
   <body>
-    <h1 id="tiempo"></h1>
+    <header id="cabecera">
+      <h1>Hiit Timer</h1>
+    </header>
+    <div id="app">
+      <div class="bloque">
+        <label for="num">Número de ejercicios</label>
+        <input
+          name="num"
+          v-model="num"
+          type="number"
+          placeholder="Número de ejercicios"
+          size="3"
+        />
+        <button v-on:click="crear_rutina">Crear rutina ({{ num }})</button>
+        <button v-on:click="shuffle">Ordenar</button>
+      </div>
+      <transition-group
+        v-on:appear="shuffle"
+        name="flip-list"
+        tag="div"
+        class="ejercicios"
+      >
+        <tag-ejercicio
+          class="ej"
+          v-for="ejercicio in ejercicios"
+          v-bind:ejercicio="ejercicio"
+          v-bind:key="ejercicio.nombre"
+          v-bind:class="{ seleccionado: ejercicio.seleccionado}"
+          @click.native="forzar(ejercicio)"
+        >
+        </tag-ejercicio>
+      </transition-group>
 
+      <hr />
+
+      <div id="rutina-div" class="bloque">
+        <ol v-if="rutina().length > 0">
+          <li v-for="ejercicio_r in rutina()" v-bind:key="ejercicio_r.nombre">
+            <span> {{ ejercicio_r.nombre }} </span>
+          </li>
+        </ol>
+        <p v-else>La rutina no tiene ejercicios.</p>
+      </div>
+
+      <hr />
+
+      <div id="controles" class="bloque">
+        <label for="series">Series</label>
+        <input
+          name="series"
+          v-model.number="series"
+          type="number"
+          placeholder="Número de series"
+          size="3"
+        />
+        <label for="activo">Tiempo de actividad</label>
+        <input
+          name="activo"
+          v-model.number="t_activo"
+          type="number"
+          placeholder="Tiempo de actividad"
+          size="3"
+        />
+        <label for="descanso">Tiempo de descanso</label>
+        <input
+          name="descanso"
+          v-model.number="t_descanso"
+          type="number"
+          placeholder="Tiempo de descanso"
+          size="3"
+        />
+        <label for="descansoserie">Descanso entre series</label>
+        <input
+          name="descansoserie"
+          v-model.number="t_descanso_serie"
+          type="number"
+          placeholder="Descanso entre series"
+          size="3"
+        />
+        <label for="calentamiento">Tiempo de calentamiento</label>
+        <input
+          name="calentamiento"
+          v-model.number="t_calentamiento"
+          type="number"
+          placeholder="Tiempo de calentamiento"
+          size="3"
+        />
+        <button v-on:click="entrenar">Empezar</button>
+      </div>
+
+      <hr />
+
+      <div v-if="modal_v" id="modal">
+        <div id="contenido-modal" class="bloque">
+          <span class="close" @click="reset_entrenamiento()">&times;</span>
+          <div v-if="t_tiempo == 0">
+            <p class="grande">{{ t_etiqueta_entrenamiento }}</p>
+          </div>
+          <div v-else id="entrenamiento">
+            <p>Serie {{ serie_actual }}</p>
+            <p>Ahora:</p>
+            <p class="grande">{{ t_etiqueta_entrenamiento }}</p>
+            <p>Restante:</p>
+            <p class="grande">{{ t_tiempo }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bloque">
+        <span class="pie">Professor Tomato | 2020</span>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.4.0/gsap.min.js"></script>
+    <script src="data.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
