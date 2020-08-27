@@ -121,6 +121,10 @@ p {
   margin-bottom: 5px;
 }
 
+.menosmargen {
+  margin-left: 30px;
+}
+
 /* MODAL */
 #modal {
   position: fixed; /* Stay in place */

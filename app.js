@@ -75,14 +75,17 @@ var app = new Vue({
       this.modal_v = true;
 
       // Componer el entrenamiento
-      let audio1 = new Audio("./beep1.ogg");
-      let audio2 = new Audio("./beep1.ogg");
-      let audio_go = new Audio("./cannon.ogg");
-      let audio_fin = new Audio("./crowd.wav");
-      audio1.load();
-      audio2.load();
-      audio_go.load();
-      audio_fin.load();
+      const audio1 = new Audio();
+      const audio2 = new Audio();
+      const audio_go = new Audio();
+      const audio_fin = new Audio();
+      // Hay que reproducir con interacción del usuario
+      // antes de usar los sonidos donde corresponde
+      // para que funcione en Safari en iOS
+      audio1.play();
+      audio2.play();
+      audio_go.play();
+      audio_fin.play();
 
       // Formar el array de ejercicios
       let array_ejercicios = this.rutina();
@@ -129,6 +132,11 @@ var app = new Vue({
       let fin = false;
       let elem_actual = 0;
       let suena_inicial = false;
+
+      audio1.src = "./beep1.ogg";
+      audio2.src = "./beep1.ogg";
+      audio_go.src = "./cannon.ogg";
+      audio_fin.src = "./crowd.ogg";
 
       // Función de intervalo (OJO: las variables de Vue no
       // llevan this, sino el nombre de la instancia)
