@@ -133,10 +133,10 @@ var app = new Vue({
       let elem_actual = 0;
       let suena_inicial = false;
 
-      audio1.src = "./beep1.ogg";
-      audio2.src = "./beep1.ogg";
-      audio_go.src = "./cannon.ogg";
-      audio_fin.src = "./crowd.ogg";
+      audio1.src = "./beep1.wav";
+      audio2.src = "./beep1.wav";
+      audio_go.src = "./cannon.wav";
+      audio_fin.src = "./crowd.wav";
 
       // Función de intervalo (OJO: las variables de Vue no
       // llevan this, sino el nombre de la instancia)
