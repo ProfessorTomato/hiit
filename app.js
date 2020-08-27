@@ -133,9 +133,9 @@ var app = new Vue({
       let elem_actual = 0;
       let suena_inicial = false;
 
-      audio1.src = "./beep1.wav";
-      audio2.src = "./beep1.wav";
-      audio_go.src = "./beep2.wav";
+      audio1.src = "./beep01.wav";
+      audio2.src = "./beep01.wav";
+      audio_go.src = "./beep02.wav";
       audio_fin.src = "./crowd.wav";
 
       // Función de intervalo (OJO: las variables de Vue no
