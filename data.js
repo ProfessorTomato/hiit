@@ -79,4 +79,29 @@ var ejercicios_data = [
     nombre: "Burpees",
     audio: "burpees.ogg",
   },
+  {
+    id: 16,
+    nombre: "Paso lateral con banda",
+    audio: "lateral.ogg",
+  },
+  {
+    id: 17,
+    nombre: "Fondos de tríceps",
+    audio: "triceps.ogg",
+  },
+  {
+    id: 18,
+    nombre: "Zancadas en banco",
+    audio: "zbanco.ogg",
+  },
+  {
+    id: 19,
+    nombre: "Zancadas",
+    audio: "zancadas.ogg",
+  },
+  {
+    id: 20,
+    nombre: "Elevación de pierna (glúteos)",
+    audio: "epierna.ogg",
+  },
 ];
