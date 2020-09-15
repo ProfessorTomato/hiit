@@ -1,3 +1,12 @@
+// VANILLA JS (CSS selector)
+var CSS_seleccionado = document.querySelector("#style");
+
+function cambiarCSS(estilo) {
+  CSS_seleccionado.href = estilo;
+}
+
+// VUEJS
+
 Vue.component("tag-ejercicio", {
   props: ["ejercicio"],
   template: "<div><span> {{ ejercicio.nombre }} </span></div>",

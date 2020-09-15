@@ -1,15 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap");
 
 html,
 body {
   font-size: 16pt;
-  color: purple;
-  font-family: "Permanent Marker", cursive;
-  background-image: linear-gradient(
-    to bottom,
-    rgb(255, 225, 250),
-    rgb(255, 255, 255)
-  );
+  color: rgb(202, 220, 247);
+  font-family: "Fjalla One", sans-serif;
+  background-image: linear-gradient(to bottom, rgb(1, 4, 10), rgb(15, 28, 102));
   background-attachment: fixed;
 }
 
@@ -45,7 +42,7 @@ body {
   margin: 8px;
   padding: 5px;
   display: block;
-  border: 1px solid purple;
+  border: 1px solid rgb(202, 220, 247);
   border-radius: 5px;
   cursor: pointer;
 }
@@ -65,19 +62,19 @@ body {
 }
 
 button {
-  border: 1px solid pink;
+  border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   padding: 5px;
-  background-color: purple;
+  background-color: rgb(66, 46, 16);
   font-size: 16pt;
-  font-family: "Permanent Marker", cursive;
+  font-family: "Fjalla One", sans-serif;
   color: white;
   margin: 5px;
 }
 
 input {
-  font-family: "Permanent Marker", cursive;
-  color: purple;
+  font-family: "Fjalla One", sans-serif;
+  color: rgb(202, 220, 247);
   font-size: 16pt;
   padding: 5px;
   display: block;
@@ -85,7 +82,7 @@ input {
   clear: right;
   background-color: transparent;
   border-radius: 5px;
-  border: 1px solid purple;
+  border: 1px solid rgb(202, 220, 247);
 }
 
 button:hover {
@@ -99,11 +96,11 @@ button:hover {
 }
 
 .seleccionado {
-  background-color: rgb(181, 247, 187);
+  background-color: rgb(43, 110, 49);
 }
 
 hr {
-  border-top: 2px solid purple;
+  border-top: 2px solid rgb(202, 220, 247);
 }
 
 .grande {
@@ -138,22 +135,22 @@ p {
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(211, 172, 255); /* Fallback color */
+  background-color: rgb(6, 11, 94); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
 }
 
 #contenido-modal {
   font-size: 20pt;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(9, 14, 53, 0.7);
   margin: 15% auto; /* 15% from the top and centered */
-  border: 4px solid purple;
+  border: 4px solid rgb(202, 220, 247);
   width: 90%; /* Could be more or less, depending on screen size */
   max-width: 800px;
 }
 
 /* The Close Button */
 .close {
-  color: purple;
+  color: rgb(202, 220, 247);
   float: right;
   font-size: 36px;
   font-weight: bold;
@@ -165,4 +162,22 @@ p {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.hora {
+  font-weight: bold;
+  font-style: italic;
+  color: rgb(164, 229, 255);
+}
+
+#purple_button {
+  color: purple;
+  background-color: rgb(255, 225, 250);
+  font-family: "Permanent Marker", cursive;
+}
+
+#blue_button {
+  color: rgb(202, 220, 247);
+  background-color: rgb(15, 28, 102);
+  font-family: "Fjalla One", sans-serif;
 }
