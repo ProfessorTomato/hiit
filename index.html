@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HIIT Timer</title>
-    <link rel="stylesheet" href="style.css" />
+    <link id="style" rel="stylesheet" href="style1.css" />
     <link rel="icon" href="favicon.png" type="image/png" />
   </head>
   <body>
@@ -104,14 +104,17 @@
           v-if="t_total_entrenamiento_s > 60 && num_rutina > 0 && t_activo > 0"
         >
           <hr />
-          <p>
-            Tiempo total de entrenamiento: {{ t_minutos_entrenamiento }} minutos
+          <p>Tiempo total de entrenamiento:</p>
+          <p class="hora">
+            {{ t_minutos_entrenamiento }} minutos
             <span v-if="t_segundos_entrenamiento != 0"
               >y {{ t_segundos_entrenamiento }} segundos</span
             >
           </p>
-          <p>Hora actual: {{ hora_actual }}</p>
-          <p>Fin de entrenamiento: {{ hora_fin }}</p>
+          <p>Hora actual:</p>
+          <p class="hora">{{ hora_actual }}</p>
+          <p>Fin de entrenamiento:</p>
+          <p class="hora">{{ hora_fin }}</p>
         </div>
       </div>
 
@@ -138,6 +141,15 @@
             <p>Termina a las {{ hora_fin_bloqueada }}</p>
           </div>
         </div>
+      </div>
+
+      <div class="bloque">
+        <button id="purple_button" onclick='cambiarCSS("style1.css")'>
+          Light purple
+        </button>
+        <button id="blue_button" onclick='cambiarCSS("style2.css")'>
+          Dark blue
+        </button>
       </div>
 
       <div class="bloque">
