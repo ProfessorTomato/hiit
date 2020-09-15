@@ -99,6 +99,19 @@
           size="3"
         />
         <button v-on:click="entrenar">Empezar</button>
+
+        <div
+          v-if="t_total_entrenamiento_s > 60 && num_rutina > 0 && t_activo > 0"
+        >
+          <p>
+            Tiempo total de entrenamiento: {{ t_minutos_entrenamiento }} minutos
+            <span v-if="t_segundos_entrenamiento != 0"
+              >y {{ t_segundos_entrenamiento }} segundos</span
+            >
+          </p>
+          <p>Hora actual: {{ hora_actual }}</p>
+          <p>Fin de entrenamiento: {{ hora_fin }}</p>
+        </div>
       </div>
 
       <hr />
@@ -120,6 +133,8 @@
             <hr />
             <p>Restante:</p>
             <p class="muymuygrande">{{ t_tiempo }}</p>
+            <hr />
+            <p>Termina a las {{ hora_fin_bloqueada }}</p>
           </div>
         </div>
       </div>

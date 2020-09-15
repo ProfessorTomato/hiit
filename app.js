@@ -19,18 +19,67 @@ var app = new Vue({
     serie_actual: 0,
     intervalo: null,
     modal_v: false,
+    num_rutina: 0,
+    hora_actual: "", // String
+    hora_sin_formato: "", // Tipo Date
+    hora_fin_bloqueada: "", // String
   },
-  computed: {},
+  computed: {
+    // Tiempo total: calentamiento + (series * ejercicios * tiempo por ejercicio) + (series * (ejercicios-1) * descanso) + (series-1) * descanso entre series
+    t_total_entrenamiento_s: function () {
+      return (
+        this.t_calentamiento +
+        this.num_rutina * this.series * this.t_activo +
+        (this.num_rutina - 1) * this.series * this.t_descanso +
+        (this.series - 1) * this.t_descanso_serie +
+        5
+      );
+    },
+    t_minutos_entrenamiento: function () {
+      return Math.floor(this.t_total_entrenamiento_s / 60);
+    },
+    t_segundos_entrenamiento: function () {
+      return this.t_total_entrenamiento_s % 60;
+    },
+    hora_fin: function () {
+      d = this.hora_sin_formato;
+      d.setSeconds(d.getSeconds() + this.t_total_entrenamiento_s);
+      let h = this.cero_izquierda(d.getHours());
+      let m = this.cero_izquierda(d.getMinutes());
+
+      return h + ":" + m;
+    },
+  },
   created: function () {
+    this.hora_cada_segundo();
     this.ejercicios.forEach((element, index) => {
       this.ejercicios[index].seleccionado = false;
     });
   },
   methods: {
+    cero_izquierda: function (num) {
+      if (num < 10) {
+        num = "0" + num;
+      }
+      return num;
+    },
+    set_hora_actual: function () {
+      let d = new Date();
+      this.hora_sin_formato = d;
+      let h = this.cero_izquierda(d.getHours());
+      let m = this.cero_izquierda(d.getMinutes());
+
+      this.hora_actual = h + ":" + m;
+    },
+    hora_cada_segundo: function () {
+      setInterval(this.set_hora_actual, 1000);
+    },
     rutina: function () {
-      return this.ejercicios.filter(
+      let rutina = this.ejercicios.filter(
         (ejercicio) => ejercicio.seleccionado === true
       );
+      this.num_rutina = rutina.length;
+      return rutina;
     },
     shuffle: function () {
       // El "_" es parte de la biblioteca lodash
@@ -63,8 +112,10 @@ var app = new Vue({
       //   }
       // });
     },
+    // Necesario para forzar que un ejercicio se seleccione o deseleccione al pulsar sobre él
     forzar: function (ejercicio) {
       ejercicio.seleccionado = !ejercicio.seleccionado;
+      this.num_rutina = this.rutina().length;
       this.$forceUpdate();
     },
     entrenar: function () {
@@ -74,117 +125,129 @@ var app = new Vue({
       // Mostarmos la ventana modal
       this.modal_v = true;
 
-      // Componer el entrenamiento
-      const audio1 = new Audio();
-      const audio2 = new Audio();
-      const audio_go = new Audio();
-      const audio_fin = new Audio();
-      // Hay que reproducir con interacción del usuario
-      // antes de usar los sonidos donde corresponde
-      // para que funcione en Safari en iOS
-      audio1.play();
-      audio2.play();
-      audio_go.play();
-      audio_fin.play();
+      if (
+        this.t_activo < 1 ||
+        this.series < 1 ||
+        this.t_descanso < 1 ||
+        this.t_descanso_serie < 1
+      ) {
+        app.t_etiqueta_entrenamiento = "Entrenamiento no válido";
+      } else {
+        // Hora del final del entrenamiento
+        this.hora_fin_bloqueada = this.hora_fin;
 
-      // Formar el array de ejercicios
-      let array_ejercicios = this.rutina();
-      console.log(array_ejercicios);
+        // Componer el entrenamiento
+        const audio1 = new Audio();
+        const audio2 = new Audio();
+        const audio_go = new Audio();
+        const audio_fin = new Audio();
+        // Hay que reproducir con interacción del usuario
+        // antes de usar los sonidos donde corresponde
+        // para que funcione en Safari en iOS
+        audio1.play();
+        audio2.play();
+        audio_go.play();
+        audio_fin.play();
 
-      let array_entrenamiento = [];
-      let objeto_a = {};
-      objeto_a["nombre"] = "Cuenta atrás";
-      objeto_a["tiempo"] = 5;
-      objeto_a["serie"] = 1;
-      array_entrenamiento.push(objeto_a);
-      let objeto_c = {};
-      if (this.t_calentamiento > 0) {
-        objeto_c["nombre"] = "Calentamiento";
-        objeto_c["tiempo"] = this.t_calentamiento;
-        objeto_c["serie"] = 1;
-        array_entrenamiento.push(objeto_c);
-      }
-      for (let i = 0; i < this.series; i++) {
-        for (let j = 0; j < array_ejercicios.length; j++) {
-          let objeto1 = {};
-          let objeto2 = {};
-          objeto1["nombre"] = array_ejercicios[j].nombre;
-          objeto1["tiempo"] = this.t_activo;
-          objeto1["serie"] = i + 1;
-          array_entrenamiento.push(objeto1);
-          objeto2["nombre"] = "Descanso";
-          if (j === array_ejercicios.length - 1) {
-            objeto2["tiempo"] = this.t_descanso_serie;
-          } else {
-            objeto2["tiempo"] = this.t_descanso;
-          }
-          objeto2["serie"] = i + 1;
-          array_entrenamiento.push(objeto2);
+        // Formar el array de ejercicios
+        let array_ejercicios = this.rutina();
+        console.log(array_ejercicios);
+
+        let array_entrenamiento = [];
+        let objeto_a = {};
+        objeto_a["nombre"] = "Cuenta atrás";
+        objeto_a["tiempo"] = 5;
+        objeto_a["serie"] = 1;
+        array_entrenamiento.push(objeto_a);
+        let objeto_c = {};
+        if (this.t_calentamiento > 0) {
+          objeto_c["nombre"] = "Calentamiento";
+          objeto_c["tiempo"] = this.t_calentamiento;
+          objeto_c["serie"] = 1;
+          array_entrenamiento.push(objeto_c);
         }
-      }
-      array_entrenamiento.pop();
+        for (let i = 0; i < this.series; i++) {
+          for (let j = 0; j < array_ejercicios.length; j++) {
+            let objeto1 = {};
+            let objeto2 = {};
+            objeto1["nombre"] = array_ejercicios[j].nombre;
+            objeto1["tiempo"] = this.t_activo;
+            objeto1["serie"] = i + 1;
+            array_entrenamiento.push(objeto1);
+            objeto2["nombre"] = "Descanso";
+            if (j === array_ejercicios.length - 1) {
+              objeto2["tiempo"] = this.t_descanso_serie;
+            } else {
+              objeto2["tiempo"] = this.t_descanso;
+            }
+            objeto2["serie"] = i + 1;
+            array_entrenamiento.push(objeto2);
+          }
+        }
+        array_entrenamiento.pop();
 
-      console.log(array_entrenamiento);
+        console.log(array_entrenamiento);
 
-      this.t_etiqueta_entrenamiento = "Empezamos";
-      this.serie_actual = 1;
-      let par = true;
-      let fin = false;
-      let elem_actual = 0;
-      let suena_inicial = false;
+        this.t_etiqueta_entrenamiento = "Empezamos";
+        this.serie_actual = 1;
+        let par = true;
+        let fin = false;
+        let elem_actual = 0;
+        let suena_inicial = false;
 
-      audio1.src = "./beep01.wav";
-      audio2.src = "./beep01.wav";
-      audio_go.src = "./beep02.wav";
-      audio_fin.src = "./crowd.wav";
+        audio1.src = "./beep01.wav";
+        audio2.src = "./beep01.wav";
+        audio_go.src = "./beep02.wav";
+        audio_fin.src = "./crowd.wav";
 
-      // Función de intervalo (OJO: las variables de Vue no
-      // llevan this, sino el nombre de la instancia)
-      this.intervalo = setInterval(function () {
-        console.log("Fin: {1}, Tiempo: {2}", fin, app.t_tiempo);
-        console.log("Array ejercicios ", array_ejercicios.length);
-        if (array_ejercicios.length === 0) {
-          app.t_etiqueta_entrenamiento = "No has seleccionado una rutina";
-          clearInterval(app.intervalo);
-        } else {
-          if (elem_actual === array_entrenamiento.length) {
-            app.t_tiempo = "";
-            app.t_etiqueta_entrenamiento = "Fin del entrenamiento";
-            audio_fin.play();
+        // Función de intervalo (OJO: las variables de Vue no
+        // llevan this, sino el nombre de la instancia)
+        this.intervalo = setInterval(function () {
+          console.log("Fin: {1}, Tiempo: {2}", fin, app.t_tiempo);
+          console.log("Array ejercicios ", array_ejercicios.length);
+          if (array_ejercicios.length === 0) {
+            app.t_etiqueta_entrenamiento = "No has seleccionado una rutina";
             clearInterval(app.intervalo);
           } else {
-            app.t_tiempo = array_entrenamiento[elem_actual].tiempo--;
-            app.t_etiqueta_entrenamiento =
-              array_entrenamiento[elem_actual].nombre;
-            // Solo se actualiza el ejercicio siguiente si existe
-            if (elem_actual < array_entrenamiento.length - 1) {
-              app.t_etiqueta_siguiente =
-                array_entrenamiento[elem_actual + 1].nombre;
+            if (elem_actual === array_entrenamiento.length) {
+              app.t_tiempo = "";
+              app.t_etiqueta_entrenamiento = "Fin del entrenamiento";
+              audio_fin.play();
+              clearInterval(app.intervalo);
             } else {
-              app.t_etiqueta_siguiente = "Fin del entrenamiento";
-            }
+              app.t_tiempo = array_entrenamiento[elem_actual].tiempo--;
+              app.t_etiqueta_entrenamiento =
+                array_entrenamiento[elem_actual].nombre;
+              // Solo se actualiza el ejercicio siguiente si existe
+              if (elem_actual < array_entrenamiento.length - 1) {
+                app.t_etiqueta_siguiente =
+                  array_entrenamiento[elem_actual + 1].nombre;
+              } else {
+                app.t_etiqueta_siguiente = "Fin del entrenamiento";
+              }
 
-            app.serie_actual = array_entrenamiento[elem_actual].serie;
-            console.log(app.t_etiqueta_entrenamiento);
-            if (app.t_tiempo === 1) {
-              elem_actual++;
-            }
-            // En los últimos 3 segundos hay alerta de sonido
-            if (app.t_tiempo >= 1 && app.t_tiempo <= 3) {
-              par
-                ? (audio1.play(), (par = false))
-                : (audio2.play(), (par = true));
-            }
-            if (suena_inicial) {
-              audio_go.play();
-              suena_inicial = false;
-            }
-            if (app.t_tiempo === 1) {
-              suena_inicial = true;
+              app.serie_actual = array_entrenamiento[elem_actual].serie;
+              console.log(app.t_etiqueta_entrenamiento);
+              if (app.t_tiempo === 1) {
+                elem_actual++;
+              }
+              // En los últimos 3 segundos hay alerta de sonido
+              if (app.t_tiempo >= 1 && app.t_tiempo <= 3) {
+                par
+                  ? (audio1.play(), (par = false))
+                  : (audio2.play(), (par = true));
+              }
+              if (suena_inicial) {
+                audio_go.play();
+                suena_inicial = false;
+              }
+              if (app.t_tiempo === 1) {
+                suena_inicial = true;
+              }
             }
           }
-        }
-      }, 1000);
+        }, 1000);
+      }
     },
     reset_entrenamiento: function () {
       clearInterval(this.intervalo);
