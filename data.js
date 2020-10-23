@@ -104,4 +104,19 @@ var ejercicios_data = [
     nombre: "Elevación de pierna (glúteos)",
     audio: "epierna.ogg",
   },
+  {
+    id: 21,
+    nombre: "Plancha pirámide",
+    audio: "piramide.ogg",
+  },
+  {
+    id: 22,
+    nombre: "Total Crunch",
+    audio: "total-crunch.ogg",
+  },
+  {
+    id: 23,
+    nombre: "Cardio boxing",
+    audio: "boxing.ogg",
+  },
 ];
