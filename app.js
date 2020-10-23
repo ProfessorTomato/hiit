@@ -21,7 +21,7 @@ var app = new Vue({
     t_activo: 30,
     t_descanso: 10,
     t_descanso_serie: 60,
-    t_calentamiento: 0,
+    t_calentamiento: 30,
     t_etiqueta_entrenamiento: "",
     t_etiqueta_siguiente: "",
     t_tiempo: 0,
@@ -154,6 +154,8 @@ var app = new Vue({
         const audio_descanso = new Audio();
         const audio_calentamiento = new Audio();
         const audio_fin = new Audio();
+        const audio_despues = new Audio();
+        const audio_ejercicio = new Audio();
         // Hay que reproducir con interacción del usuario
         // antes de usar los sonidos donde corresponde
         // para que funcione en Safari en iOS
@@ -165,6 +167,8 @@ var app = new Vue({
         audio_calentamiento.play();
         audio_descanso.play();
         audio_fin.play();
+        audio_despues.play();
+        audio_ejercicio.play();
 
         // Formar el array de ejercicios. Cada elemento del array tiene nombre, duración y serie actual.
         let array_ejercicios = this.rutina();
@@ -175,6 +179,7 @@ var app = new Vue({
         objeto_a["nombre"] = "Cuenta atrás";
         objeto_a["tiempo"] = 5;
         objeto_a["serie"] = 1;
+
         array_entrenamiento.push(objeto_a);
         let objeto_c = {};
         if (this.t_calentamiento > 0) {
@@ -190,6 +195,7 @@ var app = new Vue({
             objeto1["nombre"] = array_ejercicios[j].nombre;
             objeto1["tiempo"] = this.t_activo;
             objeto1["serie"] = i + 1;
+            objeto1["audio"] = array_ejercicios[j].audio;
             array_entrenamiento.push(objeto1);
             objeto2["nombre"] = "Descanso";
             if (j === array_ejercicios.length - 1) {
@@ -211,15 +217,18 @@ var app = new Vue({
         let fin = false;
         let elem_actual = 0;
         let suena_inicial = false;
+        let aviso_despues = false;
+        let aviso_ejercicio = false;
 
-        audio3.src = "./tres.wav";
-        audio2.src = "./dos.wav";
-        audio1.src = "./uno.wav";
-        audio_diez.src = "./diezseg.wav";
-        audio_calentamiento.src = "./calentamiento.wav";
-        audio_go.src = "./vamos.wav";
-        audio_descanso.src = "./descanso.wav";
-        audio_fin.src = "./crowd.wav";
+        audio3.src = "./wav/tres.wav";
+        audio2.src = "./wav/dos.wav";
+        audio1.src = "./wav/uno.wav";
+        audio_diez.src = "./wav/diezseg.wav";
+        audio_calentamiento.src = "./wav/calentamiento.wav";
+        audio_go.src = "./wav/vamos.wav";
+        audio_descanso.src = "./wav/descanso.wav";
+        audio_fin.src = "./wav/crowd.wav";
+        audio_despues.src = "./wav/despues.wav";
 
         // Función de intervalo (OJO: las variables de Vue no
         // llevan this, sino el nombre de la instancia)
@@ -264,8 +273,28 @@ var app = new Vue({
               if (app.t_tiempo === 2) audio2.play();
               if (app.t_tiempo === 1) audio1.play();
 
+              // Aviso Ejercicio (importante que este if vaya antes del siguiente)
+              if (aviso_ejercicio) {
+                console.log("Después Nombre de ejercicio");
+                let ruta_sonido =
+                  "./wav/" + array_entrenamiento[elem_actual + 1].audio;
+                console.log(ruta_sonido);
+                audio_ejercicio.src = ruta_sonido;
+                audio_ejercicio.play();
+                aviso_ejercicio = false;
+              }
+              // Aviso Siguiente ejercicio
+              if (aviso_despues) {
+                console.log("Primero Después");
+                audio_despues.play();
+                aviso_ejercicio = true;
+                aviso_despues = false;
+              }
+
+              // Aviso 10 segundos
               if (
                 app.t_tiempo === 10 &&
+                app.t_activo > 12 &&
                 array_entrenamiento[elem_actual].nombre != "Calentamiento" &&
                 array_entrenamiento[elem_actual].nombre != "Descanso" &&
                 array_entrenamiento[elem_actual].nombre != "Cuenta atrás"
@@ -279,6 +308,7 @@ var app = new Vue({
                 // Suena "Calentamiento"
                 suena_inicial = false;
                 audio_calentamiento.play();
+                aviso_despues = true;
               } else if (
                 suena_inicial &&
                 array_entrenamiento[elem_actual].nombre == "Descanso"
@@ -286,6 +316,7 @@ var app = new Vue({
                 // Suena "Descanso"
                 suena_inicial = false;
                 audio_descanso.play();
+                aviso_despues = true;
               } else if (suena_inicial) {
                 // Suena "¡Vamos!"
                 suena_inicial = false;
