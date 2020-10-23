@@ -119,4 +119,9 @@ var ejercicios_data = [
     nombre: "Cardio boxing",
     audio: "boxing.ogg",
   },
+  {
+    id: 24,
+    nombre: "Peso muerto",
+    audio: "peso-muerto.ogg",
+  },
 ];

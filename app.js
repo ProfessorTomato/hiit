@@ -148,17 +148,23 @@ var app = new Vue({
         // Componer el entrenamiento
         const audio1 = new Audio();
         const audio2 = new Audio();
+        const audio3 = new Audio();
         const audio_go = new Audio();
+        const audio_descanso = new Audio();
+        const audio_calentamiento = new Audio();
         const audio_fin = new Audio();
         // Hay que reproducir con interacción del usuario
         // antes de usar los sonidos donde corresponde
         // para que funcione en Safari en iOS
         audio1.play();
         audio2.play();
+        audio3.play();
         audio_go.play();
+        audio_calentamiento.play();
+        audio_descanso.play();
         audio_fin.play();
 
-        // Formar el array de ejercicios
+        // Formar el array de ejercicios. Cada elemento del array tiene nombre, duración y serie actual.
         let array_ejercicios = this.rutina();
         console.log(array_ejercicios);
 
@@ -199,14 +205,17 @@ var app = new Vue({
 
         this.t_etiqueta_entrenamiento = "Empezamos";
         this.serie_actual = 1;
-        let par = true;
+        // let par = true;
         let fin = false;
         let elem_actual = 0;
         let suena_inicial = false;
 
-        audio1.src = "./beep01.wav";
-        audio2.src = "./beep01.wav";
-        audio_go.src = "./beep02.wav";
+        audio3.src = "./tres.wav";
+        audio2.src = "./dos.wav";
+        audio1.src = "./uno.wav";
+        audio_calentamiento.src = "./calentamiento.wav";
+        audio_go.src = "./vamos.wav";
+        audio_descanso.src = "./descanso.wav";
         audio_fin.src = "./crowd.wav";
 
         // Función de intervalo (OJO: las variables de Vue no
@@ -241,15 +250,37 @@ var app = new Vue({
                 elem_actual++;
               }
               // En los últimos 3 segundos hay alerta de sonido
-              if (app.t_tiempo >= 1 && app.t_tiempo <= 3) {
-                par
-                  ? (audio1.play(), (par = false))
-                  : (audio2.play(), (par = true));
-              }
-              if (suena_inicial) {
-                audio_go.play();
+              // if (app.t_tiempo >= 1 && app.t_tiempo <= 3) {
+              //   par
+              //     ? (audio1.play(), (par = false))
+              //     : (audio2.play(), (par = true));
+              // }
+
+              // Cambio a sonidos con voz
+              if (app.t_tiempo === 3) audio3.play();
+              if (app.t_tiempo === 2) audio2.play();
+              if (app.t_tiempo === 1) audio1.play();
+
+              if (
+                suena_inicial &&
+                array_entrenamiento[elem_actual].nombre == "Calentamiento"
+              ) {
+                // Suena "Calentamiento"
                 suena_inicial = false;
+                audio_calentamiento.play();
+              } else if (
+                suena_inicial &&
+                array_entrenamiento[elem_actual].nombre == "Descanso"
+              ) {
+                // Suena "Descanso"
+                suena_inicial = false;
+                audio_descanso.play();
+              } else if (suena_inicial) {
+                // Suena "¡Vamos!"
+                suena_inicial = false;
+                audio_go.play();
               }
+
               if (app.t_tiempo === 1) {
                 suena_inicial = true;
               }
