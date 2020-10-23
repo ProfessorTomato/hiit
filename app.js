@@ -299,7 +299,7 @@ var app = new Vue({
                 array_entrenamiento[elem_actual].nombre != "Cuenta atrás"
               ) {
                 // Vamos a elegir un grito de ánimo al azar entre los 5 que tenemos.
-                let max = 6;
+                let max = 5;
                 let min = 1;
                 let n_al_azar =
                   Math.floor(Math.random() * (max - min + 1)) + min;
