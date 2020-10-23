@@ -150,6 +150,7 @@ var app = new Vue({
         const audio2 = new Audio();
         const audio3 = new Audio();
         const audio_go = new Audio();
+        const audio_diez = new Audio();
         const audio_descanso = new Audio();
         const audio_calentamiento = new Audio();
         const audio_fin = new Audio();
@@ -160,6 +161,7 @@ var app = new Vue({
         audio2.play();
         audio3.play();
         audio_go.play();
+        audio_diez.play();
         audio_calentamiento.play();
         audio_descanso.play();
         audio_fin.play();
@@ -213,6 +215,7 @@ var app = new Vue({
         audio3.src = "./tres.wav";
         audio2.src = "./dos.wav";
         audio1.src = "./uno.wav";
+        audio_diez.src = "./diezseg.wav";
         audio_calentamiento.src = "./calentamiento.wav";
         audio_go.src = "./vamos.wav";
         audio_descanso.src = "./descanso.wav";
@@ -261,6 +264,14 @@ var app = new Vue({
               if (app.t_tiempo === 2) audio2.play();
               if (app.t_tiempo === 1) audio1.play();
 
+              if (
+                app.t_tiempo === 10 &&
+                array_entrenamiento[elem_actual].nombre != "Calentamiento" &&
+                array_entrenamiento[elem_actual].nombre != "Descanso" &&
+                array_entrenamiento[elem_actual].nombre != "Cuenta atrás"
+              ) {
+                audio_diez.play();
+              }
               if (
                 suena_inicial &&
                 array_entrenamiento[elem_actual].nombre == "Calentamiento"
