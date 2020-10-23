@@ -150,7 +150,7 @@ var app = new Vue({
         const audio2 = new Audio();
         const audio3 = new Audio();
         const audio_go = new Audio();
-        const audio_diez = new Audio();
+        const audio_animo = new Audio();
         const audio_descanso = new Audio();
         const audio_calentamiento = new Audio();
         const audio_fin = new Audio();
@@ -163,7 +163,7 @@ var app = new Vue({
         audio2.play();
         audio3.play();
         audio_go.play();
-        audio_diez.play();
+        audio_animo.play();
         audio_calentamiento.play();
         audio_descanso.play();
         audio_fin.play();
@@ -223,7 +223,6 @@ var app = new Vue({
         audio3.src = "./wav/tres.wav";
         audio2.src = "./wav/dos.wav";
         audio1.src = "./wav/uno.wav";
-        audio_diez.src = "./wav/diezseg.wav";
         audio_calentamiento.src = "./wav/calentamiento.wav";
         audio_go.src = "./wav/vamos.wav";
         audio_descanso.src = "./wav/descanso.wav";
@@ -291,15 +290,21 @@ var app = new Vue({
                 aviso_despues = false;
               }
 
-              // Aviso 10 segundos
+              // Grito de ánimo en la mitad del ejercicio. Se elige uno al azar.
               if (
-                app.t_tiempo === 10 &&
+                app.t_tiempo === Math.floor(app.t_activo / 2) &&
                 app.t_activo > 12 &&
                 array_entrenamiento[elem_actual].nombre != "Calentamiento" &&
                 array_entrenamiento[elem_actual].nombre != "Descanso" &&
                 array_entrenamiento[elem_actual].nombre != "Cuenta atrás"
               ) {
-                audio_diez.play();
+                // Vamos a elegir un grito de ánimo al azar entre los 5 que tenemos.
+                let max = 6;
+                let min = 1;
+                let n_al_azar =
+                  Math.floor(Math.random() * (max - min + 1)) + min;
+                audio_animo.src = "./wav/animo" + n_al_azar + ".wav";
+                audio_animo.play();
               }
               if (
                 suena_inicial &&
