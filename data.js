@@ -124,4 +124,9 @@ var ejercicios_data = [
     nombre: "Peso muerto",
     audio: "peso-muerto.wav",
   },
+  {
+    id: 25,
+    nombre: "Sentadillas con salto",
+    audio: "sentadillas-salto.wav",
+  },
 ];
